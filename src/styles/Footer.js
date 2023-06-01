@@ -13,6 +13,7 @@ export const Footer = styled.footer`
     position: fixed;
     bottom: 0;
     lefT: 0;
+    z-index: 100;
 
     button {
         font-size: 18px;

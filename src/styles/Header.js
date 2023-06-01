@@ -16,6 +16,7 @@ export const Header = styled.header`
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 100;
 
     h1 {
         font-family: 'Playball', cursive;
