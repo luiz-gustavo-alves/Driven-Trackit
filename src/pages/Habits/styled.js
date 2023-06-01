@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const PageContainer = styled.main`
 
     background-color: #F4F4F4;
-    height: 100vh;
 `;
 
 export const PageContent = styled.main`
@@ -38,37 +37,39 @@ export const Container = styled.div`
         border: none;
         border-radius: 5px;
         padding-bottom: 3px;
+        cursor: pointer;
     }
 `;
 
 export const Content = styled.div`
 
     width: 100%;
-    height: 180px;
+    height: 165px;
     background-color: #FFF;
     border-radius: 5px;
     padding: 15px;
-    margin: 0 auto;
 `;
 
-export const Description = styled.div`
+export const Form = styled.form`
 
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    gap: 25px;
+    gap: 5px;
+`;
 
-    input {
-        width: 95%;
-        height: 45px;
-        border: 1px solid #D4D4D4;
-        border-radius: 5px;
-        outline-color: #52B6FF;
-        font-size: 20px;
-        padding: 0 10px;
-        ::placeholder {
-            color: #CACACA;
-        }
+export const FormInput = styled.input`
+
+    cursor: ${props => props.disabled ? "not-allowed" : "auto"};
+
+    width: 95%;
+    height: 45px;
+    border: 1px solid #D4D4D4;
+    border-radius: 5px;
+    outline-color: #52B6FF;
+    font-size: 20px;
+    padding: 0 10px;
+    ::placeholder {
+        color: #CACACA;
     }
 `;
 
@@ -77,17 +78,19 @@ export const Weekdays = styled.div`
     display: flex;
     margin: 10px 0;
     gap: 5px;
+`;
 
-    button {
-        width: 30px;
-        height: 30px;
-        border: 1px solid #D4D4D4;
-        background-color: #FFF;
-        border-radius: 5px;
-        font-size: 20px;
-        color: #DBDBDB;
-        cursor: pointer;
-    }
+export const Day = styled.button`
+
+    background-color: ${props => props.check ? "#D4D4D4" : "#FFF"};
+    color: ${props => props.check ? "#FFF" : "#D4D4D4"};
+    cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
+
+    width: 30px;
+    height: 30px;
+    border: 1px solid #D4D4D4;
+    border-radius: 5px;
+    font-size: 20px;
 `;
 
 export const Confirmation = styled.div`
@@ -97,20 +100,48 @@ export const Confirmation = styled.div`
     align-items: center;
     font-size: 16px;
     gap: 20px;
+    width: 90%;
+    margin-left: 20px;
+    position: relative;
+`;
 
-    h3 {
-        color: #52B6FF;
-        cursor: pointer;
+export const CancelButton = styled.div`
+
+    cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
+
+    border-radius: 5px;
+    background-color: #FFF;
+    border: none;
+    color: #52B6FF;
+
+    &:hover{
+        text-decoration: ${props => props.disabled ? "none" : "underline"};
     }
+`;
 
-    button {
+export const SubmitButton = styled.button`
 
-        width: 84px;
-        height: 36px;
-        border-radius: 5px;
-        background-color: #52B6FF;
-        border: none;
-        color: #FFF;
-        cursor: pointer;
-    }
+    cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
+
+    width: 84px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: #52B6FF;
+    border: none;
+    color: #FFF;
+`;
+
+export const Loader = styled.div`
+
+    position: absolute;
+    bottom: 0px;
+    right: 23px;
+`;
+
+export const CenterLoader = styled.div`
+
+    position: absolute;
+    top: 50%;  
+    left: 50%;
+    transform: translate(-50%, -50%);
 `;
