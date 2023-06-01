@@ -29,30 +29,36 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 5px;
+    position: relative;
+`;
 
-    input {
-        width: 300px;
-        height: 45px;
-        border: 1px solid #D4D4D4;
-        border-radius: 5px;
-        outline-color: #52B6FF;
-        font-size: 20px;
-        padding: 0 10px;
-        ::placeholder {
-            color: #CACACA;
-        }
-    }
+export const FormInput = styled.input`
 
-    button {
-        width: 300px;
-        height: 45px;
-        background-color: #52B6FF;
-        border: none;
-        border-radius: 5px;
-        font-size: 21px;
-        color: #FFF;
-        cursor: pointer;
+    cursor: ${props => props.disabled ? "not-allowed" : "auto"};
+
+    width: 300px;
+    height: 45px;
+    border: 1px solid #D4D4D4;
+    border-radius: 5px;
+    outline-color: #52B6FF;
+    font-size: 20px;
+    padding: 0 10px;
+
+    ::placeholder {
+        color: #CACACA;
     }
+`;
+
+export const SubmitButton = styled.button`
+
+    cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
+    width: 300px;
+    height: 45px;
+    background-color: #52B6FF;
+    border: none;
+    border-radius: 5px;
+    font-size: 21px;
+    color: #FFF;
 `;
 
 export const Redirect = styled.h2`
@@ -60,4 +66,12 @@ export const Redirect = styled.h2`
     color: #52B6FF;
     font-size: 14px;
     text-decoration: underline;
+`;
+
+export const Loader = styled.div`
+
+    position: absolute;
+    bottom: 0;
+    bottom: -12px;
+    left: 112px;
 `;

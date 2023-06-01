@@ -1,15 +1,50 @@
 /* Import Styled Components and Dependencies */
-import { PageContainer, PageContent, Logo, Form, Redirect } from "../../styles/Entry";
-import { Link } from "react-router-dom";
+import { PageContainer, PageContent, Logo, Form, FormInput, SubmitButton, Redirect, Loader } from "../../styles/Entry";
+import { ThreeDots } from "react-loader-spinner";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-/* Import Locally Images */
+/* Local Imports */
+import BASE_URL from "../../constants/urls";
 import logo from "../../assets/trackit_logo.jpg";
 
 export default function Registration() {
 
+    const navigate = useNavigate();
+
+    const [registrationData, setRegistrationData] = useState({
+        email: "",
+        name: "",
+        image: "",
+        password: ""
+    });
+
+    const [disableForm, setdisableForm] = useState(false);
+
+    const updateRegistrationData = (newData) => {
+        
+        setRegistrationData(previousData => ({
+            ...previousData,
+            ...newData
+        }));
+    }
+
+    const registerUser = (event) => {
+
+        event.preventDefault();
+        setdisableForm(true);
+
+        axios.post(`${BASE_URL}/auth/sign-up`, registrationData)
+            .then(() => navigate("/"))
+            .catch(() => {
+                alert("Não possível realizar o cadastro, tente novamente mais tarde.");
+                setdisableForm(false);
+            });
+    }
+
     return (
         <PageContainer>
-
             <PageContent>
 
                 <Logo>
@@ -18,12 +53,53 @@ export default function Registration() {
                     </Link>
                 </Logo>
 
-                <Form>
-                    <input placeholder="email"></input>
-                    <input placeholder="senha"></input>
-                    <input placeholder="nome"></input>
-                    <input placeholder="foto"></input>
-                    <button>Cadastrar</button>
+                <Form onSubmit={registerUser}>
+                    <FormInput type="text"
+                        required
+                        maxLength="100"
+                        value={registrationData.email}
+                        disabled={disableForm}
+                        onChange={(e) => updateRegistrationData({email: e.target.value})}
+                        placeholder="email"
+                    />
+                    <FormInput type="password"
+                        required
+                        maxLength="100"
+                        value={registrationData.password}
+                        disabled={disableForm}
+                        onChange={(e) => updateRegistrationData({password: e.target.value})}
+                        placeholder="senha"
+                    />
+                    <FormInput type="text"
+                        required
+                        maxLength="100"
+                        value={registrationData.name}
+                        disabled={disableForm}
+                        onChange={(e) => updateRegistrationData({name: e.target.value})}
+                        placeholder="nome"
+                    />
+                    <FormInput type="text"
+                        required
+                        maxLength="256"
+                        value={registrationData.image}
+                        disabled={disableForm}
+                        onChange={(e) => updateRegistrationData({image: e.target.value})}
+                        placeholder="foto"
+                    />
+                    <SubmitButton type="submit"
+                        disabled={disableForm}
+                        >{disableForm ? "" : "Cadastar"}
+                    </SubmitButton>
+                    <Loader>
+                        <ThreeDots 
+                            height="70"
+                            width="70"
+                            radius="9"
+                            color="#FFF"
+                            ariaLabel="three-dots-loading"
+                            visible={disableForm}
+                        />
+                    </Loader>
                 </Form>
 
                 <Redirect>
@@ -33,7 +109,6 @@ export default function Registration() {
                 </Redirect>
 
             </PageContent>
-
         </PageContainer>
     );
 }
