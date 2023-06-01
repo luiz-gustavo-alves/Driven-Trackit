@@ -1,23 +1,31 @@
 /* Import Styled Components and Dependencies */
-import { PageContainer, PageContent, Container, Content, Description, Weekdays, Confirmation } from "./styled"
+import { PageContainer, PageContent, Container, Content, Description, Weekdays, Confirmation } from "./styled";
 import { Header, ProfilePicture } from "../../styles/Header";
 import { Footer } from "../../styles/Footer";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 
-/* Import Locally Images */
-import profileImage from "../../assets/goku.png";
+/* Local Imports */
+import UserAuth from "../../contexts/UserAuth";
 
-export default function Habits() {
+export default function Habits(props) {
+
+    const { userData } = props;
+    const { userAuth } = useContext(UserAuth);
+
+    if (!userAuth) {
+        return (<h1>Erro de Autentificação...</h1>);
+    }
 
     return (
         <PageContainer>
 
             <Header>
                 <Link to="/">
-                    <h1>TrackIt</h1>
+                    <h1 title="TrackIt">TrackIt</h1>
                 </Link>
                 <ProfilePicture>
-                    <img src={profileImage} alt="icon" />
+                    <img src={userData.image} alt={`${userData.name} icon`} title={`${userData.name} icon`} />
                 </ProfilePicture>
             </Header>
 

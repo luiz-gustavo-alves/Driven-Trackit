@@ -36,5 +36,6 @@ export const ProfilePicture = styled.div`
         width: 50px;
         height: 50px;
         border-radius: 25px;
+        cursor: pointer;
     }
 `;

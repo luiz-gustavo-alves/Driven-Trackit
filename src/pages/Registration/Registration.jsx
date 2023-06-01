@@ -13,14 +13,13 @@ export default function Registration() {
 
     const navigate = useNavigate();
 
+    const [disableForm, setdisableForm] = useState(false);
     const [registrationData, setRegistrationData] = useState({
         email: "",
         name: "",
         image: "",
         password: ""
     });
-
-    const [disableForm, setdisableForm] = useState(false);
 
     const updateRegistrationData = (newData) => {
         
