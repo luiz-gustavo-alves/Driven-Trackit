@@ -13,7 +13,7 @@ export default function CreatedHabits(props) {
     
     const deleteHabit = (id) => {
 
-        if (window.confirm(`Deseja excluir o hábito: ${habit.name} ?`)) {
+        if (window.confirm(`Deseja excluir o hábito: ${habit.name}?`)) {
 
             const config = {
                 headers: {

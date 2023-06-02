@@ -1,17 +1,18 @@
 /* Import Styled Components and Dependencies */
 import {
         PageContainer,
-        PageContent, 
-        Container, 
-        CreateHabitBox, 
-        Form, 
-        FormInput, 
-        Weekdays, 
-        Day, 
-        Confirmation, 
-        CancelButton, 
+        PageContent,
+        Container,
+        Content,
+        CreateHabitBox,
+        Form,
+        FormInput,
+        Weekdays,
+        Day,
+        Confirmation,
+        CancelButton,
         SubmitButton,
-        Loader, 
+        Loader,
         CenterLoader } from "./styled";
 import { Header, ProfilePicture } from "../../styles/Header";
 import { Footer } from "../../styles/Footer";
@@ -174,71 +175,73 @@ export default function Habits(props) {
                         onClick={toggleCreateHabit}>+</button>
                 </Container>
 
-                {createHabit && 
-                    <CreateHabitBox>
-                        <Form onSubmit={createNewHabit}>
-                            <div>
-                                <FormInput type="text"
-                                    required
-                                    maxLength="100"
-                                    value={habit.name}
-                                    disabled={disableForm}
-                                    onChange={(e) => updateHabit({name: e.target.value})}
-                                    placeholder="nome do habito"></FormInput>
-                                <Weekdays>
-                                {WEEKDAYS.map((day) => {
-                                    const check = (habit.days.includes(day.id)) ? true : false;
-                                    return (
-                                        <Day type="button"
-                                            key={day.id}
-                                            check={check}
-                                            disabled={disableForm}
-                                            title={day.title}
-                                            onClick={() => selectDay(day.id)}
-                                        >{day.name}</Day>
-                                    );
-                                })}
-                                </Weekdays>
-                            </div>
-                            <Confirmation>
-                                <CancelButton type="button"
-                                    disabled={disableForm}
-                                    title="Cancel"
-                                    onClick={toggleCreateHabit}
-                                    >Cancelar
-                                </CancelButton>
-                                <SubmitButton type="submit"
-                                    disabled={disableForm}
-                                    title="Save"
-                                    >{disableForm ? "" : "Salvar"}
-                                </SubmitButton>
-                                <Loader>
-                                    <ThreeDots 
-                                        height="35"
-                                        width="35"
-                                        radius="9"
-                                        color="#FFF"
-                                        ariaLabel="three-dots-loading"
-                                        visible={disableForm}
-                                    />
-                                </Loader>
-                            </Confirmation>
-                        </Form>
-                    </CreateHabitBox>
-                }
+                <Content>
+                    {createHabit && 
+                        <CreateHabitBox>
+                            <Form onSubmit={createNewHabit}>
+                                <div>
+                                    <FormInput type="text"
+                                        required
+                                        maxLength="100"
+                                        value={habit.name}
+                                        disabled={disableForm}
+                                        onChange={(e) => updateHabit({name: e.target.value})}
+                                        placeholder="nome do habito"></FormInput>
+                                    <Weekdays>
+                                    {WEEKDAYS.map((day) => {
+                                        const check = (habit.days.includes(day.id)) ? true : false;
+                                        return (
+                                            <Day type="button"
+                                                key={day.id}
+                                                check={check}
+                                                disabled={disableForm}
+                                                title={day.title}
+                                                onClick={() => selectDay(day.id)}
+                                            >{day.name}</Day>
+                                        );
+                                    })}
+                                    </Weekdays>
+                                </div>
+                                <Confirmation>
+                                    <CancelButton type="button"
+                                        disabled={disableForm}
+                                        title="Cancel"
+                                        onClick={toggleCreateHabit}
+                                        >Cancelar
+                                    </CancelButton>
+                                    <SubmitButton type="submit"
+                                        disabled={disableForm}
+                                        title="Save"
+                                        >{disableForm ? "" : "Salvar"}
+                                    </SubmitButton>
+                                    <Loader>
+                                        <ThreeDots 
+                                            height="35"
+                                            width="35"
+                                            radius="9"
+                                            color="#FFF"
+                                            ariaLabel="three-dots-loading"
+                                            visible={disableForm}
+                                        />
+                                    </Loader>
+                                </Confirmation>
+                            </Form>
+                        </CreateHabitBox>
+                    }
 
-                {createdHabitsList.length === 0 ?
-                    <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
-                    :
-                    createdHabitsList.map(habit =>
-                        <CreatedHabits
-                            key={habit.id}
-                            habit={habit}
-                            setHabitStatus={setHabitStatus}
-                            token={userData.token}
-                        />
-                    )
-                }
+                    {createdHabitsList.length === 0 ?
+                        <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
+                        :
+                        createdHabitsList.map(habit =>
+                            <CreatedHabits
+                                key={habit.id}
+                                habit={habit}
+                                setHabitStatus={setHabitStatus}
+                                token={userData.token}
+                            />
+                        )
+                    }
+                </Content>
 
             </PageContent>
 

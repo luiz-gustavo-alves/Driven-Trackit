@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.main`
+export const PageContainer = styled.div`
 
     background-color: #F4F4F4;
 `;
@@ -39,6 +39,13 @@ export const Container = styled.div`
         padding-bottom: 3px;
         cursor: pointer;
     }
+`;
+
+export const Content = styled.div`
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 `;
 
 export const CreateHabitBox = styled.div`
