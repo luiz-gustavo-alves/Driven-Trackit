@@ -14,6 +14,7 @@ export const Footer = styled.footer`
     bottom: 0;
     lefT: 0;
     z-index: 100;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
     button {
         font-size: 18px;

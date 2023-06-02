@@ -11,6 +11,10 @@ export const GlobalStyle = createGlobalStyle`
         font-weight: 400;
     }
 
+    body {
+        background-color: #F4F4F4;
+    }
+
     a {
         text-decoration: none;
         color: inherit;
