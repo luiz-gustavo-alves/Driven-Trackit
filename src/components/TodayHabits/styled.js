@@ -1,45 +1,9 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.main`
-
-    background-color: #F4F4F4;
-    height: 100vh;
-`;
-
-export const PageContent = styled.main`
-
-    padding: 100px 20px;
-    max-width: 450px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    font-size: 18px;
-    color: #666666;
-    gap: 10px;
-`;
-
-export const Container = styled.div`
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 10px;
-
-    h2 {
-        font-size: 23px;
-        color: #126BA5;
-    }
-
-    h3 {
-        font-size: 18;
-        color: #BABABA;
-    }
-`;
-
 export const ContentContainer = styled.div`
 
     width: 100%;
-    margin: 0 auto;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 export const Content = styled.div`
@@ -74,17 +38,20 @@ export const Details = styled.div`
     gap: 5px;
 
     h3 {
+        color: ${props => props.isHighestSequence ? "#8FC549" : "#666666"};
         font-size: 13px;
-        color: #666666;
     }
 `;
 
-export const Status = styled.div`
+export const Status = styled.button`
     
-    background-color: #EBEBEB;
+    background-color: ${props => props.isDone ? "#8FC549": "#EBEBEB"};
+    
+    border: none;
     width: 70px;
     height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `;

@@ -8,7 +8,7 @@ import Habits from "./pages/Habits/Habits";
 import History from "./pages/History/History";
 import Login from "./pages/Login/Login";
 import Registration from "./pages/Registration/Registration";
-import TodayHabit from "./pages/TodayHabit/TodayHabit";
+import Today from "./pages/Today/Today";
 
 /* Axios token configuration */
 const token = "uno6r9oP7lrt17ZaOROMIr8i";
@@ -37,7 +37,7 @@ export default function App() {
                     />}
                 />
                 <Route path="/hoje" element=
-                    {<TodayHabit
+                    {<Today
                         userData={userData}
                     />}
                 />
