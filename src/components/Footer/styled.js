@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Footer = styled.footer`
+export const Container = styled.footer`
 
     width: 100%;
     min-width: 300px;
@@ -23,4 +23,14 @@ export const Footer = styled.footer`
         color: #52B6FF;
         cursor: pointer;
     }
+`;
+
+export const Progress = styled.div`
+
+    width: 92px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -30px;
+    margin: 0 auto;
 `;

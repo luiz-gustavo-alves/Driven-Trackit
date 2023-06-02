@@ -14,10 +14,7 @@ import {
         SubmitButton,
         Loader,
         CenterLoader } from "./styled";
-import { Header, ProfilePicture } from "../../styles/Header";
-import { Footer } from "../../styles/Footer";
 import { Oval, ThreeDots } from 'react-loader-spinner';
-import { Link } from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import axios from "axios";
 
@@ -123,8 +120,8 @@ export default function Habits(props) {
     const dayCondition = (id) => {
 
         const selectedDays = habit.days;
-
         for (let i = 0; i < selectedDays.length; i++) {
+
             if (id === selectedDays[i]) {
                 return {isAlreadySelected: true, index: i};
             }
@@ -147,26 +144,13 @@ export default function Habits(props) {
     }
 
     const toggleCreateHabit = () => {
-
-        if (createHabit === true) {
-            setCreateHabit(false);
-        } else {
-            setCreateHabit(true);
-        }
+        (createHabit === true) ? setCreateHabit(false) : setCreateHabit(true);
     }
+
+    const emptyHabitList = (createdHabitsList.length === 0) ? true : false;
 
     return (
         <PageContainer>
-
-            <Header>
-                <Link to="/">
-                    <h1 title="TrackIt">TrackIt</h1>
-                </Link>
-                <ProfilePicture>
-                    <img src={userData.image} alt={`${userData.name} icon`} title={`${userData.name} icon`} />
-                </ProfilePicture>
-            </Header>
-
             <PageContent>
                 <Container>
                     <h2>Meus hábitos</h2>
@@ -174,7 +158,6 @@ export default function Habits(props) {
                         title="Create habit"
                         onClick={toggleCreateHabit}>+</button>
                 </Container>
-
                 <Content>
                     {createHabit && 
                         <CreateHabitBox>
@@ -228,10 +211,10 @@ export default function Habits(props) {
                             </Form>
                         </CreateHabitBox>
                     }
-
-                    {createdHabitsList.length === 0 ?
+                    {emptyHabitList &&
                         <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
-                        :
+                    }
+                    {!emptyHabitList &&
                         createdHabitsList.map(habit =>
                             <CreatedHabits
                                 key={habit.id}
@@ -242,21 +225,7 @@ export default function Habits(props) {
                         )
                     }
                 </Content>
-
             </PageContent>
-
-            <Footer>
-                <Link to="/habitos">
-                    <button>Hábitos</button>
-                </Link>
-                <Link to="/hoje">
-                    <button>Hoje</button>
-                </Link>
-                <Link to="/historico">
-                    <button>Histórico</button>
-                </Link>
-            </Footer>
-
         </PageContainer>
     );
 }

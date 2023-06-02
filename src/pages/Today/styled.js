@@ -14,7 +14,7 @@ export const PageContent = styled.main`
     flex-direction: column;
     font-size: 18px;
     color: #666666;
-    gap: 10px;
+    gap: 25px;
 `;
 
 export const Container = styled.div`
@@ -39,7 +39,7 @@ export const Habits = styled.div`
 
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 `;
 
 export const CenterLoader = styled.div`

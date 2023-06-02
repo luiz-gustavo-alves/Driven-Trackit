@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-import profileImage from "../assets/goku.png";
-
-export const Header = styled.header`
+export const Container = styled.header`
 
     width: 100%;
     min-width: 300px;
@@ -33,7 +31,7 @@ export const ProfilePicture = styled.div`
     background-color: #FFF;
 
     img {
-        background-image: url(${profileImage});
+        background-image: url(${props => props.profileImage});
         width: 50px;
         height: 50px;
         border-radius: 25px;

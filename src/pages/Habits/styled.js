@@ -45,7 +45,7 @@ export const Content = styled.div`
 
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
 `;
 
 export const CreateHabitBox = styled.div`
