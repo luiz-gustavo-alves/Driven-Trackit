@@ -7,12 +7,14 @@ export const Content = styled.div`
     background-color: #FFF;
     border-radius: 5px;
     padding: 15px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 export const Description = styled.div`
 
     display: flex;
     flex-direction: column;
+    position: relative;
 
     h2 {
         font-size: 20px;
@@ -43,5 +45,23 @@ export const Day = styled.div`
     h3 {
         color: ${props => props.check ? "#FFF" : "#DBDBDB"};
         font-size: 20px;
+    }
+`;
+
+export const TrashIcon = styled.button`
+
+    width: 24px;
+    border: none;
+    background-color: inherit;
+    top: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+        width: 20px;
+        height: 20px;
     }
 `;

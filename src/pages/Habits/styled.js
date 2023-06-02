@@ -41,13 +41,14 @@ export const Container = styled.div`
     }
 `;
 
-export const Content = styled.div`
+export const CreateHabitBox = styled.div`
 
     width: 100%;
     height: 165px;
     background-color: #FFF;
     border-radius: 5px;
     padding: 15px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 export const Form = styled.form`

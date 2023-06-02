@@ -1,9 +1,9 @@
 /* Import Styled Components and Dependencies */
-import { 
-        PageContainer, 
+import {
+        PageContainer,
         PageContent, 
         Container, 
-        Content, 
+        CreateHabitBox, 
         Form, 
         FormInput, 
         Weekdays, 
@@ -13,7 +13,6 @@ import {
         SubmitButton,
         Loader, 
         CenterLoader } from "./styled";
-
 import { Header, ProfilePicture } from "../../styles/Header";
 import { Footer } from "../../styles/Footer";
 import { Oval, ThreeDots } from 'react-loader-spinner';
@@ -34,9 +33,10 @@ export default function Habits(props) {
     const { userData } = props;
     const { userAuth } = useContext(UserAuth);
 
-    const [createdHabits, setCreatedHabits] = useState(null);
-    const [createHabit, setCreateHabit] = useState(false);
     const [disableForm, setDisableForm] = useState(false);
+    const [createdHabitsList, setCreatedHabitsList] = useState(null);
+    const [createHabit, setCreateHabit] = useState(false);
+    const [habitStatus, setHabitStatus] = useState({status: "None"});
     const [habit, setHabit] = useState({
         name: "",
         days: []
@@ -55,12 +55,12 @@ export default function Habits(props) {
         };
 
         axios.get(`${BASE_URL}/habits`, config)
-            .then(res => setCreatedHabits(res.data))
+            .then(res => setCreatedHabitsList(res.data))
             .catch(err => console.log(err));
 
-    }, [userAuth, userData]);
+    }, [userAuth, userData, habitStatus]);
 
-    if (createdHabits === null){
+    if (createdHabitsList === null) {
         return (
             <CenterLoader>
                 <Oval
@@ -83,6 +83,40 @@ export default function Habits(props) {
             ...previousData,
             ...newData
         }));
+    }
+
+    const createNewHabit = (event) => {
+        
+        event.preventDefault();
+        setDisableForm(true);
+
+        setTimeout(() => {
+
+            if (habit.days.length == 0) {
+                alert("Por favor, selecione um dia de semana.");
+                setDisableForm(false);
+
+            } else {
+
+                const config = {
+                    headers: {
+                        "Authorization": `Bearer ${userData.token}`
+                    }
+                };
+
+                axios.post(`${BASE_URL}/habits`, habit, config)
+                    .then(() => {
+                        setDisableForm(false);
+                        setCreateHabit(false);
+                        updateHabit({
+                            name: "",
+                            days: []
+                        });
+                        setHabitStatus({status: "Created"});
+                    })
+                    .catch((err) => console.log(err));
+            }
+        }, 250);
     }
 
     const dayCondition = (id) => {
@@ -111,36 +145,13 @@ export default function Habits(props) {
         updateHabit({days: newDays})
     }
 
-    const createNewHabit = (event) => {
-        
-        event.preventDefault();
-        console.log(habit)
-        setDisableForm(true);
+    const toggleCreateHabit = () => {
 
-        setTimeout(() => {
-            
-            if (habit.days.length == 0) {
-                alert("Por favor, selecione um dia de semana.");
-            } else {
-
-                const config = {
-                    headers: {
-                        "Authorization": `Bearer ${userData.token}`
-                    }
-                };
-
-                axios.post(`${BASE_URL}/habits`, habit, config)
-                    .then(() => {
-                        setDisableForm(false);
-                        setCreateHabit(false);
-                        updateHabit({
-                            name: "",
-                            days: []
-                        });
-                    })
-                    .catch((err) => console.log(err));
-            }
-        }, 500);
+        if (createHabit === true) {
+            setCreateHabit(false);
+        } else {
+            setCreateHabit(true);
+        }
     }
 
     return (
@@ -158,11 +169,13 @@ export default function Habits(props) {
             <PageContent>
                 <Container>
                     <h2>Meus hábitos</h2>
-                    <button onClick={() => setCreateHabit(true)}>+</button>
+                    <button type="button"
+                        title="Create habit"
+                        onClick={toggleCreateHabit}>+</button>
                 </Container>
 
                 {createHabit && 
-                    <Content>
+                    <CreateHabitBox>
                         <Form onSubmit={createNewHabit}>
                             <div>
                                 <FormInput type="text"
@@ -180,6 +193,7 @@ export default function Habits(props) {
                                             key={day.id}
                                             check={check}
                                             disabled={disableForm}
+                                            title={day.title}
                                             onClick={() => selectDay(day.id)}
                                         >{day.name}</Day>
                                     );
@@ -187,12 +201,15 @@ export default function Habits(props) {
                                 </Weekdays>
                             </div>
                             <Confirmation>
-                                <CancelButton type="submit"
+                                <CancelButton type="button"
                                     disabled={disableForm}
+                                    title="Cancel"
+                                    onClick={toggleCreateHabit}
                                     >Cancelar
                                 </CancelButton>
                                 <SubmitButton type="submit"
                                     disabled={disableForm}
+                                    title="Save"
                                     >{disableForm ? "" : "Salvar"}
                                 </SubmitButton>
                                 <Loader>
@@ -207,16 +224,18 @@ export default function Habits(props) {
                                 </Loader>
                             </Confirmation>
                         </Form>
-                    </Content>
+                    </CreateHabitBox>
                 }
 
-                {createdHabits.length === 0 ?
+                {createdHabitsList.length === 0 ?
                     <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
                     :
-                    createdHabits.map(habit =>
+                    createdHabitsList.map(habit =>
                         <CreatedHabits
                             key={habit.id}
                             habit={habit}
+                            setHabitStatus={setHabitStatus}
+                            token={userData.token}
                         />
                     )
                 }
