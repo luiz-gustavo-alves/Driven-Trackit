@@ -39,20 +39,21 @@ export default function TodayHabits(props) {
         }
     }
 
-    const isHighestSequence = (habit.currentSequence > 0 && habit.currentSequence === habit.highestSequence) ? true : false;
+    const isRecord = (habit.currentSequence > 0 && habit.currentSequence === habit.highestSequence) ? true : false;
 
     return (
-        <ContentContainer>
+        <ContentContainer data-test="today-habit-container">
             <Content>
                 <Description>
-                    <h2>{habit.name}</h2>
-                    <Details isHighestSequence={isHighestSequence}>
-                        <h3>Sequencia atual: {habit.currentSequence} dias</h3>
-                        <h3>Seu recorde: {habit.highestSequence} dias</h3>
+                    <h2 data-test="today-habit-name">{habit.name}</h2>
+                    <Details isRecord={isRecord}>
+                        <h3 data-test="today-habit-sequence">Sequencia atual: <span>{habit.currentSequence} dias</span></h3>
+                        <h3 data-test="today-habit-record">Seu recorde: <span>{habit.highestSequence} dias</span></h3>
                     </Details>
                 </Description>
                 <Status 
                     isDone={habit.done}
+                    data-test="today-habit-check-btn"
                     onClick={() => toggleDoneHabit(habit.id)}>
                     <img src={check} alt="check" />
                 </Status>

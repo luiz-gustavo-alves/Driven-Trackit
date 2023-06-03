@@ -155,15 +155,17 @@ export default function Habits(props) {
                 <Container>
                     <h2>Meus hábitos</h2>
                     <button type="button"
+                        data-test="habit-create-btn"
                         title="Create habit"
                         onClick={toggleCreateHabit}>+</button>
                 </Container>
                 <Content>
                     {createHabit && 
-                        <CreateHabitBox>
+                        <CreateHabitBox data-test="habit-create-container">
                             <Form onSubmit={createNewHabit}>
                                 <div>
                                     <FormInput type="text"
+                                        data-test="habit-name-input"
                                         required
                                         maxLength="100"
                                         value={habit.name}
@@ -175,6 +177,7 @@ export default function Habits(props) {
                                         const check = (habit.days.includes(day.id)) ? true : false;
                                         return (
                                             <Day type="button"
+                                                data-test="habit-day"
                                                 key={day.id}
                                                 check={check}
                                                 disabled={disableForm}
@@ -187,12 +190,14 @@ export default function Habits(props) {
                                 </div>
                                 <Confirmation>
                                     <CancelButton type="button"
+                                        data-test="habit-create-cancel-btn"
                                         disabled={disableForm}
                                         title="Cancel"
                                         onClick={toggleCreateHabit}
                                         >Cancelar
                                     </CancelButton>
                                     <SubmitButton type="submit"
+                                        data-test="habit-create-save-btn"
                                         disabled={disableForm}
                                         title="Save"
                                         >{disableForm ? "" : "Salvar"}

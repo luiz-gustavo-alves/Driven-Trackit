@@ -66,6 +66,7 @@ export default function Login(props) {
 
                 <Form onSubmit={loginUser}>
                     <FormInput type="text"
+                        data-test="email-input"
                         required
                         maxLength="100"
                         value={loginData.email}
@@ -74,6 +75,7 @@ export default function Login(props) {
                         placeholder="email"
                     />
                     <FormInput type="password"
+                        data-test="password-input"
                         required
                         maxLength="100"
                         value={loginData.password}
@@ -83,6 +85,7 @@ export default function Login(props) {
                     />
                     <SubmitButton 
                         type="submit"
+                        data-test="login-btn"
                         disabled={disableForm}>
                         {disableForm ? "" : "Entrar"}
                     </SubmitButton>
@@ -99,7 +102,7 @@ export default function Login(props) {
                 </Form>
 
                 <Redirect>
-                    <Link to="/cadastro">
+                    <Link data-test="signup-link" to="/cadastro">
                         <h2>Não tem uma conta? Cadastre-se!</h2>
                     </Link>
                 </Redirect>

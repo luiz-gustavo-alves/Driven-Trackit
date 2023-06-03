@@ -54,6 +54,7 @@ export default function Registration() {
 
                 <Form onSubmit={registerUser}>
                     <FormInput type="text"
+                        data-test="email-input"
                         required
                         maxLength="100"
                         value={registrationData.email}
@@ -62,6 +63,7 @@ export default function Registration() {
                         placeholder="email"
                     />
                     <FormInput type="password"
+                        data-test="password-input"
                         required
                         maxLength="100"
                         value={registrationData.password}
@@ -70,6 +72,7 @@ export default function Registration() {
                         placeholder="senha"
                     />
                     <FormInput type="text"
+                        data-test="user-name-input"
                         required
                         maxLength="100"
                         value={registrationData.name}
@@ -78,6 +81,7 @@ export default function Registration() {
                         placeholder="nome"
                     />
                     <FormInput type="text"
+                        data-test="user-image-input"
                         required
                         maxLength="256"
                         value={registrationData.image}
@@ -86,6 +90,7 @@ export default function Registration() {
                         placeholder="foto"
                     />
                     <SubmitButton type="submit"
+                        data-test="signup-btn"
                         disabled={disableForm}
                         >{disableForm ? "" : "Cadastar"}
                     </SubmitButton>
@@ -102,7 +107,7 @@ export default function Registration() {
                 </Form>
 
                 <Redirect>
-                    <Link to="/">
+                    <Link data-test="login-link" to="/">
                         <h2>Já tem uma conta? Faça login!</h2>
                     </Link>
                 </Redirect>

@@ -33,21 +33,23 @@ export default function CreatedHabits(props) {
     }
 
     return (
-        <Content>
+        <Content data-test="habit-container">
             <Description>
                 <div>
-                    <h2>{habit.name}</h2>
+                    <h2 data-test="habit-name">{habit.name}</h2>
                     <Weekdays>
                         {WEEKDAYS.map((day) => {
                             const check = (habit.days.includes(day.id)) ? true : false;
                             return (
                                 <Day key={day.id}
+                                    data-test="habit-day"
                                     check={check}>
                                     <h3 title={day.title}>{day.name}</h3>
                                 </Day>
                             );
                         })}
                         <TrashIcon type="button"
+                            data-test="habit-delete-btn"
                             onClick={() => deleteHabit(habit.id)}>
                             <img src={trash_icon} alt="Delete habit" title="Delete" />
                         </TrashIcon>

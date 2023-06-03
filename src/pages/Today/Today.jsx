@@ -93,19 +93,15 @@ export default function Today(props) {
     }
 
     const currentDay = getCurrentDay();
-    const doneAnyHabits = progressCircle > 0 ? true : false;
+    const doneAnyHabits = (progressCircle > 0) ? true : false;
+    const message = (doneAnyHabits) ? `${progressCircle}% dos hábitos concluídos` : "Nenhum hábito concluído ainda";
 
     return (
         <PageContainer>
             <PageContent>
                 <Container doneAnyHabits={doneAnyHabits}>
-                    <h2>{currentDay}</h2>
-                    {!doneAnyHabits && 
-                        <h3>Nenhum hábito concluído ainda</h3>
-                    }
-                    {doneAnyHabits &&
-                        <h3>{progressCircle}% dos hábitos concluídos</h3>
-                    }
+                    <h2 data-test="today">{currentDay}</h2>
+                    <h3 data-test="today-counter">{message}</h3>
                 </Container>
                 <Habits>
                     {todayHabitsList.map((habit) => 

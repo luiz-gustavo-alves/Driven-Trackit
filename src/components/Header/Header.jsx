@@ -8,12 +8,12 @@ export default function Header(props) {
     const { userData } = props;
 
     return (
-        <Container>
+        <Container data-test="header">
             <Link to="/">
                 <h1 title="TrackIt">TrackIt</h1>
             </Link>
             <ProfilePicture profileImage={userData.image}>
-                <img src={userData.image} alt={`${userData.name} icon`} title={`${userData.name} icon`} />
+                <img data-test="avatar" src={userData.image} alt={`${userData.name} icon`} title={`${userData.name} icon`} />
             </ProfilePicture>
         </Container>
     );

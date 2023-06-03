@@ -38,8 +38,12 @@ export const Details = styled.div`
     gap: 5px;
 
     h3 {
-        color: ${props => props.isHighestSequence ? "#8FC549" : "#666666"};
+        color: #666666;
         font-size: 13px;
+    }
+
+    span {
+        color: ${props => props.isRecord ? "#8FC549" : "#666666"};
     }
 `;
 
