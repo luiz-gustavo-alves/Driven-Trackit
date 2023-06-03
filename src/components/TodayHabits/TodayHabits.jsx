@@ -8,16 +8,18 @@ import check from "../../assets/check.png";
 
 export default function TodayHabits(props) {
 
-    const { habit, setHabitStatus, token } = props;
+    const { habit, setHabitStatus } = props;
 
     const toggleDoneHabit = (id) => {
 
+        const { token } = JSON.parse(localStorage.getItem("userData"));
+
         const body = {};
         const config = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        };
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            };
         
         if (!habit.done) { 
 

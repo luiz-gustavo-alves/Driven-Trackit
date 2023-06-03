@@ -9,12 +9,13 @@ import trash_icon from "../../assets/trash_icon.png";
 
 export default function CreatedHabits(props) {
 
-    const { habit, setHabitStatus, token } = props;
+    const { habit, setHabitStatus } = props;
     
     const deleteHabit = (id) => {
 
         if (window.confirm(`Deseja excluir o hábito: ${habit.name}?`)) {
 
+            const { token } = JSON.parse(localStorage.getItem("userData"));
             const config = {
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -22,9 +23,7 @@ export default function CreatedHabits(props) {
             };
 
             axios.delete(`${BASE_URL}/habits/${id}`, config)
-                .then(() => {
-                    setHabitStatus({status: "Deleted"});
-                })
+                .then(() => setHabitStatus({status: "Deleted"}))
                 .catch((err) => {
                     alert("Erro ao deletar hábito. Tente novamente mais tarde.");
                     console.log(err);

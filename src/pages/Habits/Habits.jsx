@@ -15,7 +15,8 @@ import {
         Loader,
         CenterLoader } from "./styled";
 import { Oval, ThreeDots } from 'react-loader-spinner';
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 /* Import Components */
@@ -24,12 +25,10 @@ import CreatedHabits from "../../components/CreatedHabits/CreatedHabits";
 /* Local Imports */
 import BASE_URL from "../../constants/urls";
 import WEEKDAYS from "../../constants/weekdays";
-import UserAuth from "../../contexts/UserAuth";
 
-export default function Habits(props) {
+export default function Habits() {
 
-    const { userData } = props;
-    const { userAuth } = useContext(UserAuth);
+    const navigate = useNavigate();
 
     const [disableForm, setDisableForm] = useState(false);
     const [createdHabitsList, setCreatedHabitsList] = useState(null);
@@ -42,21 +41,26 @@ export default function Habits(props) {
 
     useEffect(() => {
 
-        if (!userAuth) {
-            return (<h1>Erro de Autentificação...</h1>);
+        if (localStorage.getItem("userData")) {
+
+            const { token } = JSON.parse(localStorage.getItem("userData"));
+            const config = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            };
+
+            axios.get(`${BASE_URL}/habits`, config)
+                .then(res => setCreatedHabitsList(res.data))
+                .catch(err => console.log(err));
+
+        } else {
+
+            /* Unauthorized Access or localStorage data expired */
+            navigate("/");
         }
 
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${userData.token}`
-            }
-        };
-
-        axios.get(`${BASE_URL}/habits`, config)
-            .then(res => setCreatedHabitsList(res.data))
-            .catch(err => console.log(err));
-
-    }, [userAuth, userData, habitStatus]);
+    }, [habitStatus]);
 
     if (createdHabitsList === null) {
         return (
@@ -88,17 +92,18 @@ export default function Habits(props) {
         event.preventDefault();
         setDisableForm(true);
 
-        setTimeout(() => {
+        if (habit.days.length == 0) {
+            alert("Por favor, selecione um dia de semana.");
+            setDisableForm(false);
 
-            if (habit.days.length == 0) {
-                alert("Por favor, selecione um dia de semana.");
-                setDisableForm(false);
+        } else {
 
-            } else {
+            if (localStorage.getItem("userData")) {
 
+                const { token } = JSON.parse(localStorage.getItem("userData"));
                 const config = {
                     headers: {
-                        "Authorization": `Bearer ${userData.token}`
+                        "Authorization": `Bearer ${token}`
                     }
                 };
 
@@ -113,20 +118,22 @@ export default function Habits(props) {
                         setHabitStatus({status: "Created"});
                     })
                     .catch((err) => console.log(err));
+
+            } else {
+                /* Unauthorized Access or localStorage data expired */
+                navigate("/");
             }
-        }, 250);
+        }
     }
 
     const dayCondition = (id) => {
 
         const selectedDays = habit.days;
-        for (let i = 0; i < selectedDays.length; i++) {
-
-            if (id === selectedDays[i]) {
-                return {isAlreadySelected: true, index: i};
-            }
+        if (selectedDays.includes(id)) {
+            return {isAlreadySelected: true, index: selectedDays.indexOf(id)};
+        } else {
+            return {isAlreadySelected: false, index: -1};
         }
-        return {isAlreadySelected: false, index: -1};
     }
 
     const selectDay = (id) => {
@@ -225,7 +232,6 @@ export default function Habits(props) {
                                 key={habit.id}
                                 habit={habit}
                                 setHabitStatus={setHabitStatus}
-                                token={userData.token}
                             />
                         )
                     }

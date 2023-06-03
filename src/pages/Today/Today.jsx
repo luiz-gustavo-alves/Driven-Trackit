@@ -2,6 +2,7 @@
 import { PageContainer, PageContent, Container, Habits, CenterLoader } from "./styled";
 import { Oval } from 'react-loader-spinner';
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import 'react-circular-progressbar/dist/styles.css';
 import dayjs from "dayjs";
 import 'dayjs/locale/pt-br';
@@ -12,22 +13,32 @@ import TodayHabits from "../../components/TodayHabits/TodayHabits";
 
 /* Local Imports */
 import BASE_URL from "../../constants/urls";
-import UserAuth from "../../contexts/UserAuth";
 import ProgressCircle from "../../contexts/ProgressCircle";
 
-export default function Today(props) {
+export default function Today() {
 
-    const { userData } = props;
-    const { userAuth } = useContext(UserAuth);
     const { progressCircle, setProgressCircle } = useContext(ProgressCircle);
+    const navigate = useNavigate();
 
     const [todayHabitsList, setTodayHabitsList] = useState(null);
     const [habitStatus, setHabitStatus] = useState({status: "None"});
 
     useEffect(() => {
 
-        if (!userAuth) {
-            return (<h1>Erro de Autentificação...</h1>);
+        let config = {};
+        if (localStorage.getItem("userData")) {
+
+            const { token } = JSON.parse(localStorage.getItem("userData"));
+            config = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            };
+
+        } else {
+            
+            /* Unauthorized Access or localStorage data expired */
+            navigate("/");
         }
 
         const getCurrentProgress = (habitsList) => {
@@ -35,25 +46,18 @@ export default function Today(props) {
             if (habitsList.length === 0) {
                 return 0;
             }
-
+    
             let habitsDone = 0;
             habitsList.forEach(habit => {
                 if (habit.done) {
                     habitsDone += 1;
                 }
             });
-
+    
             const numberOfHabits = habitsList.length;
-            const currentProgress = ((habitsDone / numberOfHabits) * 100).toFixed(0);
-
-            return Number(currentProgress);
+            const currentProgress = Number((habitsDone / numberOfHabits) * 100).toFixed(0);
+            return currentProgress;
         }
-
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${userData.token}`
-            }
-        };
 
         axios.get(`${BASE_URL}/habits/today`, config)
             .then(res => {
@@ -109,7 +113,6 @@ export default function Today(props) {
                             key={habit.id}
                             habit={habit}
                             setHabitStatus={setHabitStatus}
-                            token={userData.token}
                         />
                     )}
                 </Habits>

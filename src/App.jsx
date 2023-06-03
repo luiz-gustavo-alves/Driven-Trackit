@@ -19,52 +19,25 @@ const token = "uno6r9oP7lrt17ZaOROMIr8i";
 axios.defaults.headers.common['Authorization'] = token;
 
 /* Local Imports */
-import UserAuth from "./contexts/UserAuth";
 import ProgressCircle from "./contexts/ProgressCircle";
 
 export default function App() {
 
-    const [userAuth, setUserAuth] = useState(false);
-    const [progressCircle, setProgressCircle] = useState(0)
-    const [userData, setUserData] = useState({});
+    const [progressCircle, setProgressCircle] = useState(0);
 
-    let currentLocation = useLocation();
+    const { pathname } = useLocation();
 
     return (
-        <UserAuth.Provider value={{userAuth, setUserAuth}}>
-            <ProgressCircle.Provider value={{progressCircle, setProgressCircle}}>
-                {currentLocation.pathname != "/" && currentLocation.pathname != "/cadastro" &&
-                    <>
-                        <Header
-                            userData={userData}
-                        />
-                        <Footer />
-                    </>
-                }
-                <Routes>
-                    <Route path="/" element=
-                        {<Login
-                            setUserData={setUserData}
-                        />}
-                    />
-                    <Route path="/cadastro" element={<Registration />} />
-                    <Route path="/habitos" element=
-                        {<Habits
-                            userData={userData}
-                        />}
-                    />
-                    <Route path="/hoje" element=
-                        {<Today
-                            userData={userData}
-                        />}
-                    />
-                    <Route path="/historico" element=
-                        {<History
-                            userData={userData}
-                        />}
-                    />
-                </Routes>
-            </ProgressCircle.Provider>
-        </UserAuth.Provider>
+        <ProgressCircle.Provider value={{progressCircle, setProgressCircle}}>
+            {pathname !== "/" && pathname !== "/cadastro" && <Header />}
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/cadastro" element={<Registration />} />
+                <Route path="/habitos" element={<Habits />} />
+                <Route path="/hoje" element={<Today />} />
+                <Route path="/historico" element={<History />} />
+            </Routes>
+            {pathname !== "/" && pathname !== "/cadastro" && <Footer />}
+        </ProgressCircle.Provider>
     );
 }

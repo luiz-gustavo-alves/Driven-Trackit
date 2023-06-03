@@ -1,17 +1,19 @@
 /* Import Styled Components and Dependencies */
 import { PageContainer, PageContent, Container } from "./styled";
-import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
-/* Local Imports */
-import UserAuth from "../../contexts/UserAuth";
+export default function History() {
 
-export default function History(props) {
+    const navigate = useNavigate();
 
-    const { userData } = props;
-    const { userAuth } = useContext(UserAuth);
+    if (localStorage.getItem("userData")) {
 
-    if (!userAuth) {
-        return (<h1>Erro de Autentificação...</h1>);
+        const { token } = JSON.parse(localStorage.getItem("userData"));
+        console.log(token);
+
+    } else {
+        /* Unauthorized Access or localStorage data expired */
+        navigate("/");
     }
 
     return (

@@ -2,18 +2,15 @@
 import { PageContainer, PageContent, Logo, Form, FormInput, SubmitButton, Redirect, Loader } from "../../styles/Entry";
 import { ThreeDots } from 'react-loader-spinner';
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 /* Local Imports */
 import BASE_URL from "../../constants/urls";
-import UserAuth from "../../contexts/UserAuth";
 import logo from "../../assets/trackit_logo.jpg";
 
-export default function Login(props) {
+export default function Login() {
 
-    const { setUserData } = props;
-    const { setUserAuth } = useContext(UserAuth);
     const navigate = useNavigate();
 
     const [disableForm, setdisableForm] = useState(false);
@@ -39,13 +36,13 @@ export default function Login(props) {
             .then((res) => {
 
                 const data = res.data;
-                setUserData({
+                const userData = {
                     name: data.name,
                     image: data.image,
                     token: data.token
-                });
+                };
 
-                setUserAuth(true);
+                localStorage.setItem("userData", JSON.stringify(userData));
                 navigate("/hoje");
             })
             .catch(() => {
