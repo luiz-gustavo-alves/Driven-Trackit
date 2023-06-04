@@ -182,6 +182,7 @@ export default function History(props) {
                 <Container showHabit={showHabit.hidden}>
                     <h2>Histórico</h2>
                     <Calendar
+                        data-test="calendar"
                         className='react-calendar'
                         calendarType={'US'}
                         onChange={setCalendar}
