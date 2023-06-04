@@ -36,5 +36,5 @@ export default function getCurrentCircularProgress(token, setProgressCircle) {
             const currentProgress = getCurrentProgress(habitsList);
             setProgressCircle(currentProgress);
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err.message));
 }

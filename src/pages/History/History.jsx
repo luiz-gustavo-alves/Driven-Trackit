@@ -22,10 +22,11 @@ import BASE_URL from "../../constants/urls";
 import ProgressCircle from "../../contexts/ProgressCircle";
 import getCurrentCircularProgress from "../../scripts/getCurrentCircularProgress";
 
-export default function History() {
+export default function History(props) {
 
-    const navigate = useNavigate();
+    const { setErrorMessage } = props;
     const { setProgressCircle } = useContext(ProgressCircle);
+    const navigate = useNavigate();
 
     const [calendar, setCalendar] = useState(new Date());
     const [calendarHabits, setCalendarHabits] = useState(null);
@@ -88,7 +89,10 @@ export default function History() {
                     }
                     setCalendarHabits(calendarData);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    setErrorMessage(err.response.statusText);
+                    navigate("/error");
+                });
 
         } else {
             /* Unauthorized Access or localStorage data expired */
@@ -192,7 +196,7 @@ export default function History() {
                         <HabitListBox>
                             <TopContainer>
                                 <h2>{showHabit.day}</h2>
-                                <button onClick={closeHabitList}>X</button>
+                                <button onClick={closeHabitList} title="Close">X</button>
                             </TopContainer>
                             <HabitContainer>
                                 {showHabit.habits.map((habit, index) => {

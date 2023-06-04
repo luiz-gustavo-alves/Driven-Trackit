@@ -37,7 +37,7 @@ export default function Registration() {
         axios.post(`${BASE_URL}/auth/sign-up`, registrationData)
             .then(() => navigate("/"))
             .catch(() => {
-                alert("Não possível realizar o cadastro, tente novamente mais tarde.");
+                alert("Não foi possível realizar o cadastro, tente novamente mais tarde.");
                 setdisableForm(false);
             });
     }

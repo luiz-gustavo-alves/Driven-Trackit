@@ -16,8 +16,9 @@ import BASE_URL from "../../constants/urls";
 import ProgressCircle from "../../contexts/ProgressCircle";
 import getCurrentCircularProgress from "../../scripts/getCurrentCircularProgress";
 
-export default function Today() {
+export default function Today(props) {
 
+    const { setErrorMessage } = props;
     const { progressCircle, setProgressCircle } = useContext(ProgressCircle);
     const navigate = useNavigate();
 
@@ -42,7 +43,10 @@ export default function Today() {
                     const habitsList = res.data;
                     setTodayHabitsList(habitsList);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    setErrorMessage(err.response.statusText);
+                    navigate("/error");
+                });
 
         } else {
             

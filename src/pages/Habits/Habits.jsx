@@ -28,9 +28,10 @@ import WEEKDAYS from "../../constants/weekdays";
 import ProgressCircle from "../../contexts/ProgressCircle";
 import getCurrentCircularProgress from "../../scripts/getCurrentCircularProgress";
 
-export default function Habits() {
+export default function Habits(props) {
 
     const navigate = useNavigate();
+    const { setErrorMessage } = props;
     const { setProgressCircle } = useContext(ProgressCircle);
 
     const [disableForm, setDisableForm] = useState(false);
@@ -57,7 +58,10 @@ export default function Habits() {
 
             axios.get(`${BASE_URL}/habits`, config)
                 .then(res => setCreatedHabitsList(res.data))
-                .catch(err => console.log(err));
+                .catch(err => {
+                    setErrorMessage(err.response.statusText);
+                    navigate("/error");
+                });
 
         } else {
 
@@ -122,7 +126,10 @@ export default function Habits() {
                         });
                         setHabitStatus({status: "Created"});
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => {
+                        setErrorMessage(err.response.statusText);
+                        navigate("/error");
+                    });
 
             } else {
                 /* Unauthorized Access or localStorage data expired */
