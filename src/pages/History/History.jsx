@@ -1,5 +1,14 @@
 /* Import Styled Components and Dependencies */
-import { PageContainer, PageContent, Container, CenterLoader } from "./styled";
+import { 
+        PageContainer,
+        PageContent,
+        Container,
+        HabitListBox,
+        TopContainer,
+        HabitBox,
+        HabitContainer,
+        HabitContent,
+        CenterLoader } from "./styled";
 import { Oval } from 'react-loader-spinner';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -19,6 +28,11 @@ export default function History() {
     const [calendarHabits, setCalendarHabits] = useState(null);
     const [doneAllHabitsDays, setDoneAllHabitsDays] = useState(null);
     const [notDoneAllHabitsDays, setNotDoneAllHabitsDays] = useState(null);
+    const [showHabit, setShowHabit] = useState({
+        hidden: true,
+        day: "",
+        habits: []
+    });
 
     useEffect(() => {
 
@@ -37,7 +51,6 @@ export default function History() {
                     for (let j = 0; j < dayHabits.length; j++) {
 
                         const habit = dayHabits[j];
-
                         if (!habit.done) {
                             allDayHabitsDone = false;
                             break;
@@ -45,7 +58,6 @@ export default function History() {
                     }
 
                     const currentDay = calendarData[i].day;
-
                     (allDayHabitsDone) ? doneAllHabitsDays.push(currentDay) : notDoneAllHabitsDays.push(currentDay);
                 }
 
@@ -65,7 +77,7 @@ export default function History() {
 
                     const calendarData = res.data;
 
-                    /* This code only run when user redirect or refresh history page */
+                    /* This code only runs when user refresh or redirect to history page */
                     if (doneAllHabitsDays === notDoneAllHabitsDays) {
                         checkCalendarHabitStatus(calendarData);
                     }
@@ -97,7 +109,43 @@ export default function History() {
         );
     }
 
-    const presentDay = dayjs(new Date()).format('DD/MM/YYYY');
+    const getHabitListDay = (date) => {
+        
+        const currentDate = dayjs(date).format('DD/MM/YYYY');
+        const checkDateInCalendar = (currentDate) => {
+
+            for (let i = 0; i < calendarHabits.length; i++) {
+
+                const habitDay = calendarHabits[i].day;
+                if (habitDay === currentDate) {
+                    return {dateInCalendar: true, index: i};
+                }
+            }
+            return {dateInCalendar: false, index: -1};
+        }
+
+        const { dateInCalendar, index } = checkDateInCalendar(currentDate);
+        if (dateInCalendar && showHabit.hidden) {
+
+            const weekDay = dayjs(date).locale('pt-br').format('dddd');
+            const currentDay = `${weekDay}, ${calendarHabits[index].day}`;
+
+            setShowHabit({
+                hidden: false,
+                day: currentDay,
+                habits: calendarHabits[index].habits
+            });
+        }
+    }
+
+    const closeHabitList = () => {
+        
+        setShowHabit({
+            hidden: true,
+            day: "",
+            habits: ""
+        });
+    }
 
     const getTileClassName = ({ date }) => {
 
@@ -117,10 +165,12 @@ export default function History() {
         }
     }
 
+    const presentDay = dayjs(new Date()).format('DD/MM/YYYY');
+
     return (
         <PageContainer>
             <PageContent>
-                <Container>
+                <Container showHabit={showHabit.hidden}>
                     <h2>Histórico</h2>
                     <Calendar
                         className='react-calendar'
@@ -128,9 +178,34 @@ export default function History() {
                         onChange={setCalendar}
                         value={calendar}
                         tileClassName={getTileClassName}
+                        onClickDay={(date) => getHabitListDay(date)}
                         formatDay={(locale, date) => <p>{dayjs(date).format('DD')}</p>}
                     />
                 </Container>
+                {!showHabit.hidden && 
+                    <HabitBox>
+                        <HabitListBox>
+                            <TopContainer>
+                                <h2>{showHabit.day}</h2>
+                                <button onClick={closeHabitList}>X</button>
+                            </TopContainer>
+                            <HabitContainer>
+                                {showHabit.habits.map((habit, index) => {
+                                    const habitStatus = (habit.done) ? "Concluído" : "Pendente";
+                                    return (
+                                        <HabitContent 
+                                            key={index}
+                                            done={habit.done}
+                                            >
+                                            <h3>{habit.name}</h3>
+                                            <h4>{habitStatus}</h4>
+                                        </HabitContent>
+                                    );
+                                })}
+                            </HabitContainer>
+                        </HabitListBox>
+                    </HabitBox>
+                }
             </PageContent>
         </PageContainer>
     );

@@ -20,9 +20,10 @@ export const PageContent = styled.main`
 
 export const Container = styled.div`
 
+    opacity: ${props => props.showHabit ? 1 : 0.5};
+
     display: flex;
     flex-direction: column;
-    gap: 30px;
 
     h2 {
         font-size: 23px;
@@ -36,6 +37,11 @@ export const Container = styled.div`
         background-color: #FFF;
         border-radius: 10px;
         border: none;
+        margin-top: 20px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
 
         &__tile {
 
@@ -132,6 +138,82 @@ export const Container = styled.div`
                 cursor: pointer;
             }
         }
+    }
+`;
+
+export const HabitBox = styled.div`
+
+    width: calc(100% - 5vh);
+    height: 100vh;
+    top: 50%;  
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    position: absolute;
+`;
+
+export const HabitListBox = styled.div`
+
+    width: 340px;
+    height: auto;
+    background-color: #F4F4F4;
+    border: 3px solid #126BA5;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    position: absolute;
+    padding: 20px;
+    top: 50%;  
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+`;
+
+export const TopContainer = styled.div`
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+        font-weight: 700;
+        font-size: 16px;
+        color: #000;
+    }
+
+    button {
+        width: 25px;
+        height: 25px;
+        border: none;
+        background-color: #52B6FF;
+        cursor: pointer;
+    }
+`;
+
+export const HabitContainer = styled.ul`
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+export const HabitContent = styled.li`
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+        width: 180px;
+        color: #000;
+        font-size: 16px;
+        word-break: break-word;
+    }
+
+    h4 {
+        font-size: 14px;
+        color: ${props => props.done ? "#00C62E" : "#DD0037"}
     }
 `;
 
