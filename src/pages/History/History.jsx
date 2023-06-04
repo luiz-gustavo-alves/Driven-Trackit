@@ -11,7 +11,7 @@ import {
         CenterLoader } from "./styled";
 import { Oval } from 'react-loader-spinner';
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import dayjs from "dayjs";
@@ -19,10 +19,13 @@ import axios from "axios";
 
 /* Local Imports */
 import BASE_URL from "../../constants/urls";
+import ProgressCircle from "../../contexts/ProgressCircle";
+import getCurrentCircularProgress from "../../scripts/getCurrentCircularProgress";
 
 export default function History() {
 
     const navigate = useNavigate();
+    const { setProgressCircle } = useContext(ProgressCircle);
 
     const [calendar, setCalendar] = useState(new Date());
     const [calendarHabits, setCalendarHabits] = useState(null);
@@ -66,6 +69,8 @@ export default function History() {
             }
 
             const { token } = JSON.parse(localStorage.getItem("userData"));
+            getCurrentCircularProgress(token, setProgressCircle);
+
             const config = {
                 headers: {
                     "Authorization": `Bearer ${token}`

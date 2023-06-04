@@ -15,7 +15,7 @@ import {
         Loader,
         CenterLoader } from "./styled";
 import { Oval, ThreeDots } from 'react-loader-spinner';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -25,10 +25,13 @@ import CreatedHabits from "../../components/CreatedHabits/CreatedHabits";
 /* Local Imports */
 import BASE_URL from "../../constants/urls";
 import WEEKDAYS from "../../constants/weekdays";
+import ProgressCircle from "../../contexts/ProgressCircle";
+import getCurrentCircularProgress from "../../scripts/getCurrentCircularProgress";
 
 export default function Habits() {
 
     const navigate = useNavigate();
+    const { setProgressCircle } = useContext(ProgressCircle);
 
     const [disableForm, setDisableForm] = useState(false);
     const [createdHabitsList, setCreatedHabitsList] = useState(null);
@@ -44,6 +47,8 @@ export default function Habits() {
         if (localStorage.getItem("userData")) {
 
             const { token } = JSON.parse(localStorage.getItem("userData"));
+            getCurrentCircularProgress(token, setProgressCircle);
+
             const config = {
                 headers: {
                     "Authorization": `Bearer ${token}`

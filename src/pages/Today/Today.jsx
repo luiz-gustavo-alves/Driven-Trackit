@@ -14,6 +14,7 @@ import TodayHabits from "../../components/TodayHabits/TodayHabits";
 /* Local Imports */
 import BASE_URL from "../../constants/urls";
 import ProgressCircle from "../../contexts/ProgressCircle";
+import getCurrentCircularProgress from "../../scripts/getCurrentCircularProgress";
 
 export default function Today() {
 
@@ -25,48 +26,29 @@ export default function Today() {
 
     useEffect(() => {
 
-        let config = {};
         if (localStorage.getItem("userData")) {
 
             const { token } = JSON.parse(localStorage.getItem("userData"));
-            config = {
+            getCurrentCircularProgress(token, setProgressCircle);
+            
+            const config = {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             };
+
+            axios.get(`${BASE_URL}/habits/today`, config)
+                .then(res => {
+                    const habitsList = res.data;
+                    setTodayHabitsList(habitsList);
+                })
+                .catch(err => console.log(err));
 
         } else {
             
             /* Unauthorized Access or localStorage data expired */
             navigate("/");
         }
-
-        const getCurrentProgress = (habitsList) => {
-
-            if (habitsList.length === 0) {
-                return 0;
-            }
-    
-            let habitsDone = 0;
-            habitsList.forEach(habit => {
-                if (habit.done) {
-                    habitsDone += 1;
-                }
-            });
-    
-            const numberOfHabits = habitsList.length;
-            const currentProgress = Number((habitsDone / numberOfHabits) * 100).toFixed(0);
-            return currentProgress;
-        }
-
-        axios.get(`${BASE_URL}/habits/today`, config)
-            .then(res => {
-                const habitsList = res.data;
-                const currentProgress = getCurrentProgress(habitsList);
-                setProgressCircle(currentProgress);
-                setTodayHabitsList(habitsList);
-            })
-            .catch(err => console.log(err));
 
     }, [habitStatus]);
 
