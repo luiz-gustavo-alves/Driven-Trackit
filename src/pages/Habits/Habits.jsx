@@ -71,23 +71,6 @@ export default function Habits(props) {
 
     }, [habitStatus]);
 
-    if (createdHabitsList === null) {
-        return (
-            <CenterLoader>
-                <Oval
-                    height="200"
-                    width="200"
-                    color="#52B6FF"
-                    ariaLabel='oval-loading'
-                    secondaryColor="#2fa8ff"
-                    strokeWidth={2}
-                    strokeWidthSecondary={2}
-                    visible={true}
-                />
-            </CenterLoader>
-        );
-    }
-
     const updateHabit = (newData) => {
 
         setHabit(previousData => ({
@@ -101,7 +84,12 @@ export default function Habits(props) {
         event.preventDefault();
         setDisableForm(true);
 
-        if (habit.days.length == 0) {
+        if (habit.name.length == 0) {
+            alert("Por favor, selecione um nome para o hábito.");
+            setDisableForm(false);
+        }
+
+        else if (habit.days.length == 0) {
             alert("Por favor, selecione um dia de semana.");
             setDisableForm(false);
 
@@ -166,7 +154,10 @@ export default function Habits(props) {
         (createHabit === true) ? setCreateHabit(false) : setCreateHabit(true);
     }
 
-    const emptyHabitList = (createdHabitsList.length === 0) ? true : false;
+    let emptyHabitList = null;
+    if (createdHabitsList !== null) {
+        emptyHabitList = (createdHabitsList.length === 0) ? true : false;
+    }
 
     return (
         <PageContainer>
@@ -179,13 +170,26 @@ export default function Habits(props) {
                         onClick={toggleCreateHabit}>+</button>
                 </Container>
                 <Content>
-                    {createHabit && 
+                    {createdHabitsList === null &&
+                        <CenterLoader>
+                            <Oval
+                                height="200"
+                                width="200"
+                                color="#52B6FF"
+                                ariaLabel='oval-loading'
+                                secondaryColor="#2fa8ff"
+                                strokeWidth={2}
+                                strokeWidthSecondary={2}
+                                visible={true}
+                            />
+                        </CenterLoader>
+                    }
+                    {createdHabitsList !== null && createHabit && 
                         <CreateHabitBox data-test="habit-create-container">
                             <Form onSubmit={createNewHabit}>
                                 <div>
                                     <FormInput type="text"
                                         data-test="habit-name-input"
-                                        required
                                         maxLength="100"
                                         value={habit.name}
                                         disabled={disableForm}
@@ -235,10 +239,10 @@ export default function Habits(props) {
                             </Form>
                         </CreateHabitBox>
                     }
-                    {emptyHabitList &&
+                    {createdHabitsList !== null && emptyHabitList &&
                         <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3>
                     }
-                    {!emptyHabitList &&
+                    {createdHabitsList !== null && !emptyHabitList &&
                         createdHabitsList.map(habit =>
                             <CreatedHabits
                                 key={habit.id}
